@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+	<div class="conteiner" >
+		<div>
+			<h3 id="title" > Калькулятор расчета расстояния и цены </h3>
+		</div>
+		<form id="distance_form">
+			{% csrf_token %}
+
+			<div class="form-group" style="max-width: 700px;">
+				<label for="">Полный адрес места отправления:</label>
+				<input id="from_places" class="form-control" />
+				<input type="hidden" id="origin" name="origin" required/>				
+			</div>
+			<div class="form-group" style="max-width: 700px;">
+				<label for="">Полный адрес места назначения:</label>
+				<input id="to_places" class="form-control" />
+				<input type="hidden" id="destination" name="destination" required/>
+			</div>
+			<p>Укажите цену в одном из полей</p>
+			<div id="form_price" >
+				<label for="">Общая цена:</label>
+				<input type="number" id="form_prices" name="destination" value="" />				
+			</div>
+			<div id="form_price_kilo" >
+				<label for="">Цена за километр:</label>
+				<input type="number" id="form_price_kilos" pattern="\d+(,\d{2})?" name="destination" value="" />				
+			</div>
+
+			<input type="submit" name="cal" id="cal" value="Рассчитать">
+			<input style="display: none;" type="submit" name='cal_two' id="cal_two" value="Продолжить">
+		</form>
+	</div>
+	<br>
+
+	<div id="result">
+		<ul>
+			<li>
+				Цена за киллометр:
+				<span id="price_kilos"></span>
+			</li>
+			<li>
+				Общая цена:
+				<span id="prices"></span>
+			</li>
+
+			<li>
+				Расстояние в километрах:
+				<span id="in_kilo"></span>
+			</li>
+			<li>
+				Приблизительное время в пути:
+				<span id="duration_text" ></span>
+			</li>
+			<li>
+				Адресс отправления:
+				<span id="from" ></span>
+			</li>
+			<li>
+				Адрес достаки:
+				<span id="to" ></span>
+			</li>
+		</ul>
+		<a href="#" id="form_create" style="display: flex;justify-content: center;" >Заполнить форму заказа</a>
+	</div>
+
+	<div class="form-group" id="form_create_order" style="display: none;" >
+
+		<div class="answer_invisible">	
+			<form method="post">
+				{% csrf_token %}
+				<div class="form-row">
+					<div class="col-md-6 mb-3" id="input_create_order">
+						{{ form.as_p }}
+						<input type="submit" name="create_order" value="Перейти к оплате">
+					</div>
+				</div>
+			</form>
+		</div>	
+	</div>
+	<script src="{% static "js/app_create_order.js" %}"></script>
+ 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqNkIvuvBhmPizKm4r1uMACRoL8b2OUZc&libraries=places"></script>
+
+{% endblock %}

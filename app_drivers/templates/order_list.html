@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Список авторов</title>
+</head>
+<body>
+	<h5>Принять заказ вы можете нажав подробности</h5>
+	<form action="" method="POST" >
+		{% csrf_token %}
+		<table>
+			<thead >
+				<tr>
+					<th>#</th>
+					<th>Груз</th>
+					<th>Организация</th>
+					<th>Адрес отправления</th>
+					<th>Адрес доставки</th>
+					<th>Требуемое Кол-во машин</th>
+					<th>Требуемое грузоподъемность машины</th>
+					<th>Цена за 1 машину</th>
+					<th>Номер заказа</th>
+					<th>Подробности</th>
+				</tr>
+			</thead>
+			{% for i in object_list %}
+			<tbody>
+				<tr>							
+					<th>{{ forloop.counter }}</th>	
+					<th>{{ i.title }}</th>	
+					<th>{{ i.organization }}</th>	
+					<th>{{ i.adress_start }}</th>	
+					<th>{{ i.adress_end }}</th>	
+					<th>{{ i.count }}</th>	
+					<th>{{ i.mass }}</th>	
+					<th>{{ i.price }}</th>	
+					<th>{{ i.number_order }}</th>
+					<th>
+						<button><a href="{% url 'app_driver:base' %}">Подробнее</a></button>
+					</th>
+				</tr>
+			</tbody>
+			{% endfor %}
+
+			
+		</table>
+	</form>
+</body>
+</html>

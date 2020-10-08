@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+	<div class="create">	
+		<div class="answer_invisible">	
+			<form method="post">
+				<div class="form-row">
+					<div class="col-md-6 mb-3">
+						{% csrf_token %}
+						{{ form.as_p }}
+						<div style="display: none;">
+							<input type="text" id="lat" value="44.202594">
+							<input type="text" id="lng" value="43.202594">
+						</div>
+						<input type="submit">
+					</div>
+				</div>
+			</form>
+		</div>	
+	</div>
+	<div id="map"></div>
+
+
+
+<!--  	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaYbrsTNFRFNiNlIpPKBQ8tw3S_IMaijo&libraries=places&callback=activateSearch"></script> -->
+ 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaYbrsTNFRFNiNlIpPKBQ8tw3S_IMaijo&libraries=places&callback=initMap"></script>
+
+
+{% endblock %}

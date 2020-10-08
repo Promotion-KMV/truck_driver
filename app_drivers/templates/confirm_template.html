@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation</title>
+    <style>
+        body{ color: blue; }
+    </style>
+</head>
+<body>
+    {% if success %}
+        <h3>Регстрация прошла успешно!</h3>
+      	<a href="{% url 'app_driver:login' %}">Перейти на сайт</a>
+    {% else %}
+        <h3>Ошибка проверки токена попробуйте еще раз или обратитесь к администратору сайта</h3>
+    {% endif %}
+</body>
+</html>

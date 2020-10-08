@@ -1,0 +1,33 @@
+.conteiner {
+	background-color: #ddd;
+	display: flex;
+	text-decoration: none;
+}
+nav {
+	text-decoration: none;
+	color: black;
+}
+
+#p {
+	background-color: #ddd;
+} */
+
+.displaynone {
+	display: none;
+}
+
+.create {
+	display: flex;
+	justify-content: center;
+	margin-top: 1em;
+}
+.answer_invisible {
+	background-color: #93D758FF;
+	padding: 10px;
+	border-radius: 20px;
+}
+
+.answer_error {
+	display: flex;
+	justify-content: center;
+}

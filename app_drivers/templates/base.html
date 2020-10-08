@@ -1,0 +1,71 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css"%}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="{% static "js/main.js" %}"></script>
+
+</head>
+<body>
+
+	{% if not request.user.is_authenticated %}
+ 	<h5 style="display: flex; justify-content: center; margin-top: 2rem;">Пройти процедуру<a style="text-decoration: none;" href="register/"> &nbsp регистрации</a> &nbsp  или <a style="text-decoration: none;" href="login/"> &nbsp войти на сайт</a>!</h5>
+	{% endif %}
+	<p>{{user.username}}</p>
+	<p> {{ user.profile.name }} </p>
+	<p>{{user.email}}</p>
+	<p>{{ user.last_login }}</p>
+	<p>{{ user.date_joined }}</p>
+	<p> {{ user.profile.customer }} </p>
+
+	<nav style="background-color: #B8EDBBFF; margin-top: 1rem;" class="nav nav-pills flex-column flex-sm-row"> 		
+  		<a class="flex-sm-fill text-sm-center nav-link active" href="{% url 'app_driver:create_order' %}">Добавить заказ</a>		
+  		<a class="flex-sm-fill text-sm-center nav-link" href="#">Посмотреть статус заказа</a>		
+  		<a class="flex-sm-fill text-sm-center nav-link" href="#">Link</a>		
+  		<a class="flex-sm-fill text-sm-center nav-link" href="{% url 'app_drivers:logout' %}">Выйти</a>
+	</nav>
+
+	{% block content %}
+
+	<p> Ваша организация - {{ usersis }}</p>
+	<p> {{ b }} </p>
+	{% endblock %}
+
+
+
+
+<!-- 	<h4>Срез функционала приложения, на что обратить внимание</h4>
+	<br>
+	<ul>
+		<li>Регистрация проводится по 2 направлениям. <br>
+			- Регистрация организации производителя. <br>
+			- Регистрация организации перевозчика. <br>
+		</li>
+		<li>Внимательно рассмотреть все формы ввода информации на предмет добавления либо удаления (ввиду ненужности) какой либо формы</li>
+
+		<li>По возможности заполнять формы и отправлять запросы для выявления ошибок в работе тестового функционала</li>
+	</ul>
+	
+	<p>После просмотра и проверки действий по всем 4 направлениям, в случае необходимости написать на почту danger-2403@mail.ru чтобы изложить все что хотелось бы добавить либо убрать из приложения, а так же описать ошибки с которыми столкнулись при тестировании.</p>
+
+ -->
+
+<!--  	<script defer
+  		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaYbrsTNFRFNiNlIpPKBQ8tw3S_IMaijo&callback=initMap">
+	</script> -->
+
+	<script src="{% static "js/main.js" %}"></script>
+
+<!--     <script src="{% static "js/appsis.js" %}"></script> -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
