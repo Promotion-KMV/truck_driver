@@ -5,11 +5,16 @@
 	<title>Форма создания и редактирования Авторов</title>  
 </head>  
 <body>
-	<p> {{ order }} </p>
-	{% for i in order %}
-		{{i}}
-	{% endfor %}
-	<button>Отложенный платеж</button>
-	<button>Оплатить</button>   
+	{% block content %}
+	<h3>Проверьте данные и оплатите заказ</h3>
+	<div>
+		<p>oks - {{ order.id }} {{ order.name }} {{ order.number_order }} {{ order.citi_start }} {{ order.citi_end }} </p>
+	</div>
+	<form action="{% url 'app_drivers:my_order' %}">
+		<button>Оплатить</button> 
+	</form>
+
+	<p> или <a href="{% url 'app_drivers:deferred_payment' %}">Восползоваться отложенным платежом</a> </p>
+	{% endblock %}
 </body>  
 </html>

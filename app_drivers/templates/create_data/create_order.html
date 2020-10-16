@@ -70,10 +70,11 @@
 	<div class="form-group" id="form_create_order" style="display: none;" >
 
 		<div class="answer_invisible">	
-			<form method="post">
+			<form action="{% url 'app_drivers:create_order_now' %}" method="post">
 				{% csrf_token %}
 				<div class="form-row">
 					<div class="col-md-6 mb-3" id="input_create_order">
+						{% csrf_token %}
 						{{ form.as_p }}
 						<input type="submit" name="create_order" value="Перейти к оплате">
 					</div>

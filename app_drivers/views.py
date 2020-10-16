@@ -2,8 +2,7 @@
 from __future__ import unicode_literals
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404, loader
-#from django.contrib.auth.models import User
-from django import forms
+
 from django.contrib.auth import login, authenticate  
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import FormView, CreateView, ListView
@@ -16,11 +15,13 @@ from django_email_verification import sendConfirm
 from app_drivers.forms import *
 
 from app_drivers.models import *
+from app_drivers.models import Order
 import time
 from .service import *
 
 
 def register(request):
+    """ Регистрация пользователя """
     template = loader.get_template('base.html')
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -36,6 +37,7 @@ def register(request):
             user.profile.email = form.cleaned_data.get('email')
             user.profile.name = form.cleaned_data.get('name')
             user.profile.customer = form.cleaned_data.get('customer')
+            user.profile.type_organization=form.cleaned_data.get('type_organization')
             user.profile.save()
             sendConfirm(user)
 #            user = authenticate(username=user.username, password=my_password, email=email)
@@ -48,7 +50,7 @@ def register(request):
         form = SignUpForm()
         return render(request, 'register.html', context={'form': form})
 
-
+# Для тестирования
 def test_order(request):
     template = loader.get_template('base.html')
     data = {}
@@ -56,19 +58,25 @@ def test_order(request):
     return HttpResponse(template.render(data))
 
 
+
 def create_data_manufacturer(request):
+    """ Сохранение данных о компании производителя """
 #    template = loader.get_template('create_data/create_data_manufacturer.html')
-    RegistCustomerForm = modelformset_factory(RegistCustomer, fields=('adress', 'phone', 'activity', 'type_organization', 'other'))
+#    template = loader.get_template('base.html')
+    RegistCustomerForm = modelformset_factory(RegistCustomer, fields=('adress', 'phone', 'activity', 'other'))
+
     if request.method == 'POST':
         RegistCustomer.objects.all().create(title=UserProfile.objects.get(user=request.user),
 #            name=UserProfile.objects.get(user=request.user).name,
             adress= request.POST['form-0-adress'],
             phone=request.POST['form-0-phone'],
             activity=request.POST['form-0-activity'],
-            type_organization=request.POST['form-0-type_organization'],
+#            type_organization=request.POST['form-0-type_organization'],
             other=request.POST['form-0-other'],
         )
-        return HttpResponse('ok')
+
+        #return render(request,'base.html')
+        return HttpResponseRedirect(reverse_lazy('app_drivers:base'))
     else:
         form = RegistCustomerForm(queryset=RegistCustomer.objects.none())
     return render(request, 'create_data/create_data_manufacturer.html', { 'form': form})
@@ -77,15 +85,17 @@ def create_data_manufacturer(request):
 
 
 def index(request):
+    """ Стартовая страница """
     template = loader.get_template('base.html')
-    usersis = UserProfile.objects.get(user=request.user)
+    register_name = UserProfile.objects.get(user=request.user)
+    register_company = RegistCustomer.objects.filter(title=register_name).exists()
+
   
 
 
     data ={
-        'usersis': usersis,
-
-
+        'register_company':register_company,
+        'register_name': register_name,
     }
 
     return HttpResponse(template.render(data, request))
@@ -94,6 +104,7 @@ def index(request):
 
 
 def create_order(request):
+    """ Форма заполнения данных о отправке груза """
     template = loader.get_template('base.html')
     OrderFormSet = modelformset_factory(Order, fields=('title',
                   'citi_start', 'citi_end', 'adress_start','adress_end', 'price',
@@ -108,16 +119,47 @@ def create_order(request):
     return render(request, 'create_data/create_order.html', {'form' : form}) 
 
 
-def oplata(request):
+def oplata(request, order_id):
     template = loader.get_template('oplate.html')
-    order = Order.objects.all()
+    order = Order.objects.get(id=order_id)
+    p = request.user
+    
+
     data = {
         'order': order,
+        'p': p,
     }
-    return HttpResponse(template.render(data, requests))
+    return HttpResponse(template.render(data, request))
+
+
+
+def deferred_payment(request):
+    ''' Тест оплаты '''
+    template = loader.get_template('deferred_payment.html')
+    if request.method == 'POST':
+        pass
+    data = {
+
+    }
+    return HttpResponse(template.render(data, request))
+
+
+def my_order(request):
+    ''' тест оплаты '''
+    template = loader.get_template('my_order.html')
+    order = Order.objects.last()
+    
+    data ={
+        'order': order,
+    }
+
+    return HttpResponse(template.render(data, request))
+
+
 #Необходима валидация на заполнение данных
 @csrf_exempt
 def create_order_now(request):
+    ''' сохранение данных отправки груза '''
     template = loader.get_template('oplate.html')
     a = random_number_order()
     if request.method == 'POST':
@@ -140,12 +182,18 @@ def create_order_now(request):
             description = request.POST['form-0-description'],
             type_carcase = request.POST['form-0-type_carcase'],
             )
-        data = {}
-        return HttpResponse(template.render(data))
-            #return HttpResponseRedirect(reverse_lazy('app_drivers:oplata', args=(Order.objects.last().id,)))  
-        # except:
-        #    pass
-        #    return HttpResponse('no ok')
+    p = request.user
+    order = Order.objects.filter(name=UserProfile.objects.get(user=request.user)).last()
+    order_id = order.id
+
+    # data = {
+    #     'order_id': order_id,
+    #     'order': order,
+    #     'p': p,
+    # }
+    #return HttpResponse(template.render(data))
+    return HttpResponseRedirect(reverse('app_drivers:oplata', args=(order_id,)))
+
 
 
 
@@ -156,6 +204,7 @@ def create_order_now(request):
 
 
 def base(request):
+    ''' Стартовая страница '''
     context = {}
     
     if request.user.is_authenticated:
@@ -164,5 +213,5 @@ def base(request):
     return render(request, 'base.html', context)
 
 
-#Реализовать форму добавления компании для размещения заказа
-#Реализовать форму добавления заказа
+#Переделать Create_order
+#Привязать к оплате номер id

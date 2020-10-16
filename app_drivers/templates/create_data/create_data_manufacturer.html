@@ -3,19 +3,20 @@
 
 	<div class="create">	
 		<div class="answer_invisible">	
-			<form method="post">
-				<div class="form-row">
-					<div class="col-md-6 mb-3">
+			<div class="form-row">
+				<div class="col-md-6 mb-3">
+					<form method="post">
+						<h3>Заполните данные о компании</h3>
 						{% csrf_token %}
 						{{ form.as_p }}
-						<div style="display: none;">
-							<input type="text" id="lat" value="44.202594">
-							<input type="text" id="lng" value="43.202594">
-						</div>
 						<input type="submit">
+					</form>
+					<div style="display: none;">
+						<input type="text" id="lat" value="44.202594">
+						<input type="text" id="lng" value="43.202594">
 					</div>
 				</div>
-			</form>
+			</div>
 		</div>	
 	</div>
 	<div id="map"></div>

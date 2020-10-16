@@ -25,17 +25,26 @@
 	<p>{{ user.date_joined }}</p>
 	<p> {{ user.profile.customer }} </p>
 
-	<nav style="background-color: #B8EDBBFF; margin-top: 1rem;" class="nav nav-pills flex-column flex-sm-row"> 		
+	<nav style="background-color: #B8EDBBFF; margin-top: 1rem;" class="nav nav-pills flex-column flex-sm-row">
+		{% if register_company %} 		
   		<a class="flex-sm-fill text-sm-center nav-link active" href="{% url 'app_driver:create_order' %}">Добавить заказ</a>		
+  		{% endif %}
   		<a class="flex-sm-fill text-sm-center nav-link" href="#">Посмотреть статус заказа</a>		
   		<a class="flex-sm-fill text-sm-center nav-link" href="#">Link</a>		
   		<a class="flex-sm-fill text-sm-center nav-link" href="{% url 'app_drivers:logout' %}">Выйти</a>
 	</nav>
+	{% if register_company == False %}
+		<h3>Для создания заказов неоходимо заполнить данные о Вашей компании</h3>
+		<form action="{% url 'app_drivers:create_data_manufacturer' %}">
+			<input type="submit" value="Заполнить">			
+		</form>
+	{% endif %}
+	{{ register_name }}
+	{{ register_company }}
 
 	{% block content %}
 
-	<p> Ваша организация - {{ usersis }}</p>
-	<p> {{ b }} </p>
+
 	{% endblock %}
 
 

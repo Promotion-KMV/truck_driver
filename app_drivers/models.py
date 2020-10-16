@@ -12,26 +12,31 @@ import time
 from .service import *
 
 
-# class Oplata(models.Model):
-# #	name = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='заказ')
-# 	number = models.IntegerField(verbose_name='номер карты')
-# 	summa = models.SmallIntegerField(verbose_name='сумма')
-# Регитрация пользователя
-
-
 class UserProfile(models.Model):
+
+	IP = 'IP'
+	OOO = 'OOO'
+	PD = 'PD'
+
+	TYPE_ORGANIZATION = [
+		(IP, 'ИП',),
+		(OOO, 'ООО'),
+		(PD, 'Частный перевозчик'),
+	]
+
 	REGIST_CUSTOMER = 'RC'
 	REGIST_COMPANY_DRIVER = 'RCD'
-#	REGIST_DRIVER = 'RD'
+	PRIVITE_DRIVER = 'PD'
 
 	CHOICE_REGISTER = [
 		(REGIST_CUSTOMER, 'Организация производитель'),
 		(REGIST_COMPANY_DRIVER, 'Организация перевозчик'),
-#		(REGIST_DRIVER, 'Частный перевозчик')
+		(PRIVITE_DRIVER, 'Частный перевозчик')
 	]
 
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
 	name = models.CharField(max_length=200, unique=True, verbose_name='название организации')
+	type_organization = models.CharField(max_length=3, choices = TYPE_ORGANIZATION, verbose_name='Вид деятильности')
 	email = models.EmailField (max_length = 254, verbose_name='Email организации')
 	customer = models.CharField(max_length=3, choices=CHOICE_REGISTER, verbose_name='Вид деятельности'  )
 
@@ -52,15 +57,6 @@ class RegistCustomer(models.Model):
 	ALCOHOL_PRODUCTION = 'AP'
 	OTHER = 'OH'
 
-	IP = 'IP'
-	OOO = 'OOO'
-
-	TYPE_ORGANIZATION = [
-		(IP, 'ИП',),
-		(OOO, 'ООО'),
-	]
-
-
 	ACTIVITY_ORGANIZATION = [
 		(MILK_PRODUCTION, 'Молочная продукция'),
 		(NON_ALCOHOLIC, 'безалкогольные напитки'),
@@ -71,9 +67,7 @@ class RegistCustomer(models.Model):
 							 on_delete=models.CASCADE,
 							 verbose_name = 'Организация заказчик',
 							)
-	#name = models.CharField(max_length=200, unique=True, verbose_name='Ваша организация')
 	adress = models.CharField(max_length=300, verbose_name='Фактический адрес')
-	type_organization = models.CharField(max_length=3, choices = TYPE_ORGANIZATION, verbose_name='Вид деятильности')
 	phone = PhoneNumberField(max_length = 255, unique=True, verbose_name='Телефон для связи')
 	activity = models.CharField(max_length=2, choices=ACTIVITY_ORGANIZATION, verbose_name='Сфера деятельности')
 	other = models.CharField(max_length=300, verbose_name='название продукции', null=True, blank=True)
@@ -97,6 +91,7 @@ class RegistCompDriver(models.Model):
 	def __str__(self):
 		return self.name
 
+# Сохранение данных о заказе
 class Order(models.Model):
 	REFRIJERAOTR = 'RFJR'
 	FOOD_TANK = 'FDTK'
@@ -113,7 +108,6 @@ class Order(models.Model):
 	name = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 	number_order = models.CharField(max_length=14, verbose_name='Номер заказа', default=1)
 	title = models.CharField(max_length=200, verbose_name='Что перевозить',blank=False, null=False)
-#	organization = models.CharField(max_length=200, verbose_name='Организация заказчик',)
 	citi_start = models.CharField(max_length=50, verbose_name='Откуда', )
 	citi_end = models.CharField(max_length=50, verbose_name='Куда')
 	adress_start = models.CharField(max_length=300, verbose_name='адрес отправки')
@@ -130,6 +124,7 @@ class Order(models.Model):
 	description = models.TextField(verbose_name='Коментарии', null=True, blank=True )
 	is_active = models.BooleanField(verbose_name='опубликовать заказ', default=False)
 	is_status = models.BooleanField(verbose_name='статус заказа', default=False)
+	is_finish = models.BooleanField(verbose_name='заказ доставлен', default=False)
 
 	def __str__(self):
 		return self.title

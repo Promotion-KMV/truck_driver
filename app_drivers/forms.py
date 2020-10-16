@@ -15,22 +15,34 @@ from app_drivers.models import *
 class SignUpForm(UserCreationForm):
 	REGIST_CUSTOMER = 'RC'
 	REGIST_COMPANY_DRIVER = 'RCD'
+	PRIVITE_DRIVER = 'PD'
 #	REGIST_DRIVER = 'RD'
 
 	CHOICE_REGISTER = [
 		(REGIST_CUSTOMER, 'Организация производитель'),
 		(REGIST_COMPANY_DRIVER, 'Организация перевозчик'),
+		(PRIVITE_DRIVER, 'Частный перевозчик',)
 #		(REGIST_DRIVER, 'Частный перевозчик')
 	]
 
+	IP = 'IP'
+	OOO = 'OOO'
+	PD = 'Частный перевозчик'
+
+	TYPE_ORGANIZATION = [
+		(IP, 'ИП',),
+		(OOO, 'ООО'),
+		(PD, 'Частный перевозчик')
+	]
 
 	email = forms.EmailField(required=True)
 	name = forms.CharField(max_length=200)
+	type_organization = forms.CharField(widget=forms.Select(choices=TYPE_ORGANIZATION))
 	customer = forms.CharField(widget=forms.Select(choices=CHOICE_REGISTER))
 	
 	class Meta:
 		model = User
-		fields = ('username', 'name', 'customer', 'email', 'password1', 'password2', )	
+		fields = ('username', 'name', 'type_organization', 'customer', 'email', 'password1', 'password2', )	
 
 # class OplataForm(forms.ModelForm):
 # 	class Meta:
