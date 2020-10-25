@@ -17,7 +17,7 @@ urlpatterns = [
 #	path('order/create', order_create, name='order_create'),
 	path('oplata/<int:order_id>/', oplata, name='oplata'),
 #	path('distance' )
-#	path('order', OrderList.as_view(), name='order_list'),
+	path('order', OrderList.as_view(), name='order_list'),
 	path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
 	path('logout/', LogoutView.as_view(), name='logout'),
 	path('register/', register, name='register'),

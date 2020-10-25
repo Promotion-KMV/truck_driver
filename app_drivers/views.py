@@ -87,16 +87,32 @@ def create_data_manufacturer(request):
 def index(request):
     """ Стартовая страница """
     template = loader.get_template('base.html')
-    register_name = UserProfile.objects.get(user=request.user)
-    register_company = RegistCustomer.objects.filter(title=register_name).exists()
-
-  
-
-
-    data ={
-        'register_company':register_company,
-        'register_name': register_name,
+    object_list = Order.objects.all()
+ #   register_name = UserProfile.objects.get(user=request.user)
+#    register_company = RegistCustomer.objects.filter(title=register_name).exists()
+    data = {
+#        'register_name': register_name,
+        'object_list': object_list,
     }
+    if request.user.is_authenticated == False:
+        template = loader.get_template('order_list.html') 
+        return HttpResponse(template.render(data, request))
+    elif request.user.is_authenticated == True:
+        register_name = UserProfile.objects.get(user=request.user)
+        register_company = RegistCustomer.objects.filter(title=register_name).exists()
+        data ={
+            'register_company':register_company,
+            'register_name': register_name,
+        }
+        if register_name.customer == 'RCD':
+            template = loader.get_template('order_list.html')
+            object_list = Order.objects.all()
+            data = {
+                'object_list': object_list,
+                'register_name': register_name,
+            }
+            return HttpResponse(template.render(data, request))
+        return HttpResponse(template.render(data, request))
 
     return HttpResponse(template.render(data, request))
 
@@ -198,20 +214,25 @@ def create_order_now(request):
 
 
 
-# class OrderList(ListView):
-#     model = Order
-#     template_name = 'order_list.html'
+class OrderList(ListView):
+    model = Order
+    template_name = 'order_list.html'
 
 
 def base(request):
     ''' Стартовая страница '''
     context = {}
     
-    if request.user.is_authenticated:
-        context['username'] = request.user.username
+    # if request.user.is_authenticated:
+    #     context['username'] = request.user.username
 
     return render(request, 'base.html', context)
 
 
 #Переделать Create_order
 #Привязать к оплате номер id
+#После оплаты сделать статус is_active == True
+#Сделать страницу платежа с учетом комиссии
+#Сделать форму добавления данных о компании перевозчика через forms.py
+#Сделать страницу по нажатию клавиши подробнее
+#Сделать правильную логику по статусам заказа

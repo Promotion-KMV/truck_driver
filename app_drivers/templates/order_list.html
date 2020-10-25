@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Список авторов</title>
-</head>
+{% extends 'base.html' %}
+
+{% block content %}
 <body>
 	<h5>Принять заказ вы можете нажав подробности</h5>
 	<form action="" method="POST" >
 		{% csrf_token %}
-		<table>
+		<table  border="1">
 			<thead >
 				<tr>
 					<th>#</th>
 					<th>Груз</th>
 					<th>Организация</th>
-					<th>Адрес отправления</th>
-					<th>Адрес доставки</th>
+					<th>Город отправки </th>
+					<th>Город доставки</th>
 					<th>Требуемое Кол-во машин</th>
 					<th>Требуемое грузоподъемность машины</th>
 					<th>Цена за 1 машину</th>
@@ -28,15 +25,19 @@
 				<tr>							
 					<th>{{ forloop.counter }}</th>	
 					<th>{{ i.title }}</th>	
-					<th>{{ i.organization }}</th>	
-					<th>{{ i.adress_start }}</th>	
-					<th>{{ i.adress_end }}</th>	
+					<th>{{ i.name }}</th>	
+					<th>{{ i.citi_start }}</th>	
+					<th>{{ i.citi_end }}</th>	
 					<th>{{ i.count }}</th>	
 					<th>{{ i.mass }}</th>	
 					<th>{{ i.price }}</th>	
 					<th>{{ i.number_order }}</th>
 					<th>
+						{% if register_name.customer == 'RCD'%}
 						<button><a href="{% url 'app_driver:base' %}">Подробнее</a></button>
+						{% else %}
+						<p>Чтобы принять заказ <a href="{% url 'app_driver:register' %}">зарегестрируйтесь</a> <br> <a href="{% url 'app_driver:login' %}"> Войдите </a> </p>
+						{% endif %}
 					</th>
 				</tr>
 			</tbody>
@@ -46,4 +47,5 @@
 		</table>
 	</form>
 </body>
-</html>
+
+{% endblock %}

@@ -4,7 +4,7 @@ function initMap() {
 	const input_lat = document.getElementById('lat');
 	const input_lng = document.getElementById('lng');
 
-	let pos = { lat: +input_lat.value, lng: +input_lng.value }
+	let pos = { lat: 44.045225, lng: 42.854533  }
 	let opt = new google.maps.Map(document.getElementById("map"), {
 		center: pos,
 		zoom: 18

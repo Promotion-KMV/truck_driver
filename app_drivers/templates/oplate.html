@@ -8,7 +8,14 @@
 	{% block content %}
 	<h3>Проверьте данные и оплатите заказ</h3>
 	<div>
-		<p>oks - {{ order.id }} {{ order.name }} {{ order.number_order }} {{ order.citi_start }} {{ order.citi_end }} </p>
+		<p>сформирован заказ №{{ order.number_order }}</p>
+		<p>id - {{ order.id }}</p>
+		<p> организация отправитель - {{ order.name }}</p>
+		<p>адрес отпрвления {{ order.adress_start }} </p>
+		<p> адрес доставки {{ order.adress_end }} </p>
+		<p> общая цена  {{ order.price }}</p>
+		<p>цена за километр {{ order.price_on_kilo }} </p>
+
 	</div>
 	<form action="{% url 'app_drivers:my_order' %}">
 		<button>Оплатить</button> 

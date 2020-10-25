@@ -36,9 +36,9 @@ class SignUpForm(UserCreationForm):
 	]
 
 	email = forms.EmailField(required=True)
-	name = forms.CharField(max_length=200)
-	type_organization = forms.CharField(widget=forms.Select(choices=TYPE_ORGANIZATION))
-	customer = forms.CharField(widget=forms.Select(choices=CHOICE_REGISTER))
+	name = forms.CharField(max_length=200, label='Наименование организации', help_text='<em>Например: "OOO Винтрест"</em>' )
+	type_organization = forms.CharField(widget=forms.Select(choices=TYPE_ORGANIZATION), label='Тип деятельности')
+	customer = forms.CharField(widget=forms.Select(choices=CHOICE_REGISTER), label='Вид деятильности')
 	
 	class Meta:
 		model = User

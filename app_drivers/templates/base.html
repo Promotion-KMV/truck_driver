@@ -33,7 +33,7 @@
   		<a class="flex-sm-fill text-sm-center nav-link" href="#">Link</a>		
   		<a class="flex-sm-fill text-sm-center nav-link" href="{% url 'app_drivers:logout' %}">Выйти</a>
 	</nav>
-	{% if register_company == False %}
+	{% if register_company == False and register_name.customer == 'RC' %}
 		<h3>Для создания заказов неоходимо заполнить данные о Вашей компании</h3>
 		<form action="{% url 'app_drivers:create_data_manufacturer' %}">
 			<input type="submit" value="Заполнить">			

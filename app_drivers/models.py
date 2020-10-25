@@ -11,7 +11,7 @@ import datetime
 import time
 from .service import *
 
-
+# Сохранение данных о пользователе
 class UserProfile(models.Model):
 
 	IP = 'IP'
@@ -81,7 +81,7 @@ class RegistCustomer(models.Model):
 #Сохранение данных организации исполнителя
 class RegistCompDriver(models.Model):
 	name = models.CharField(max_length=200, unique=True, verbose_name='Организация доставщик')
-	first_name = models.CharField(max_length=200, verbose_name='Имя контактного лица')
+#	first_name = models.CharField(max_length=200, verbose_name='Имя контактного лица')
 	adress = models.CharField(max_length=300, verbose_name='Фактический адрес организации')
 	email = models.EmailField (max_length = 254, verbose_name='Email организации')
 	phone = PhoneNumberField(max_length = 255, unique=True,)
