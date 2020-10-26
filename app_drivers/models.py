@@ -75,21 +75,29 @@ class RegistCustomer(models.Model):
 
 
 	class Meta:
-		verbose_name = 'Сведения о компании'
-		verbose_name_plural = 'Сведения о компании'
+		verbose_name = 'Сведения о компании производителе'
+		verbose_name_plural = 'Сведения о компании производителе'
 
 #Сохранение данных организации исполнителя
 class RegistCompDriver(models.Model):
-	name = models.CharField(max_length=200, unique=True, verbose_name='Организация доставщик')
+	title = models.ForeignKey(UserProfile,
+							 on_delete=models.CASCADE,
+							 verbose_name = 'Организация перевозчик',
+							)
+#	name = models.CharField(max_length=200, unique=True, verbose_name='Организация доставщик')
 #	first_name = models.CharField(max_length=200, verbose_name='Имя контактного лица')
 	adress = models.CharField(max_length=300, verbose_name='Фактический адрес организации')
-	email = models.EmailField (max_length = 254, verbose_name='Email организации')
+#	email = models.EmailField (max_length = 254, verbose_name='Email организации')
 	phone = PhoneNumberField(max_length = 255, unique=True,)
-	rating = models.SmallIntegerField(verbose_name='Рейтинг надежности компании')
-	count = models.SmallIntegerField(verbose_name='Кол-во выполненных перевозок')
+	# rating = models.SmallIntegerField(verbose_name='Рейтинг надежности компании')
+	# count = models.SmallIntegerField(verbose_name='Кол-во выполненных перевозок')
 
-	def __str__(self):
-		return self.name
+	# def __str__(self):
+	# 	return self.title
+
+	class Meta:
+		verbose_name = 'Сведения о компании перевозчике'
+		verbose_name_plural = 'Сведения о компании перевозчике'
 
 # Сохранение данных о заказе
 class Order(models.Model):

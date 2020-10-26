@@ -14,7 +14,7 @@
 					<th>Город отправки </th>
 					<th>Город доставки</th>
 					<th>Требуемое Кол-во машин</th>
-					<th>Требуемое грузоподъемность машины</th>
+					<th>Требуемая <br>грузоподъемность машины</th>
 					<th>Цена за 1 машину</th>
 					<th>Номер заказа</th>
 					<th>Подробности</th>
@@ -34,9 +34,9 @@
 					<th>{{ i.number_order }}</th>
 					<th>
 						{% if register_name.customer == 'RCD'%}
-						<button><a href="{% url 'app_driver:base' %}">Подробнее</a></button>
+						<button><a href="{% url 'app_driver:detail_order_driver' i.id %}">Подробнее</a></button>
 						{% else %}
-						<p>Чтобы принять заказ <a href="{% url 'app_driver:register' %}">зарегестрируйтесь</a> <br> <a href="{% url 'app_driver:login' %}"> Войдите </a> </p>
+						<p>Чтобы принять заказ <a href="{% url 'app_driver:register' %}">зарегестрируйтесь</a> <br> или <a href="{% url 'app_driver:login' %}"> Войдите </a> </p>
 						{% endif %}
 					</th>
 				</tr>

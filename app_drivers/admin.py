@@ -17,8 +17,7 @@ class RegistCustomerAdmin(admin.ModelAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
 	pass
 
-	# model = Order
-	# list_display = ['title', 'organization', 'adress_start', 
-	# 				'adress_end', 'count', 'mass', 'price',
-	# 				'data_publish', 'is_active', 'is_status',
-	# ]
+@admin.register(RegistCompDriver)
+class RegistCompDriverAdmin(admin.ModelAdmin):
+	model = RegistCompDriver
+	list_display = ['title', 'adress']

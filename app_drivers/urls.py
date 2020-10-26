@@ -18,7 +18,7 @@ urlpatterns = [
 	path('oplata/<int:order_id>/', oplata, name='oplata'),
 #	path('distance' )
 	path('order', OrderList.as_view(), name='order_list'),
-	path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+	path('login/', auth_views.LoginView.as_view(template_name='authenticate/login.html'), name='login'),
 	path('logout/', LogoutView.as_view(), name='logout'),
 	path('register/', register, name='register'),
 	path('create_data_mnfr/', create_data_manufacturer, name='create_data_manufacturer'),
@@ -27,5 +27,7 @@ urlpatterns = [
 	path('create_order_now/', create_order_now, name="create_order_now"),
 	path('deferred_payment/', deferred_payment, name='deferred_payment'),
 	path('my_order/', my_order, name='my_order'),
+	path('detail_order_driver/<int:order_id>', detail_order_driver, name='detail_order_driver'),
+	path('create_compdata_driver/', create_compdata_driver, name='create_compdata_driver'),
 #	path('profile-create/', CreateUserProfile.as_view(),name='profile-create'),
 ]

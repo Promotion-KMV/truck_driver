@@ -48,7 +48,7 @@ def register(request):
             #return render(request, 'base.html')
     else:
         form = SignUpForm()
-        return render(request, 'register.html', context={'form': form})
+        return render(request, 'authenticate/register.html', context={'form': form})
 
 # Для тестирования
 def test_order(request):
@@ -88,8 +88,8 @@ def index(request):
     """ Стартовая страница """
     template = loader.get_template('base.html')
     object_list = Order.objects.all()
- #   register_name = UserProfile.objects.get(user=request.user)
-#    register_company = RegistCustomer.objects.filter(title=register_name).exists()
+   # register_name = UserProfile.objects.get(user=request.user)
+   # register_company = RegistCustomer.objects.filter(title=register_name).exists()
     data = {
 #        'register_name': register_name,
         'object_list': object_list,
@@ -100,16 +100,19 @@ def index(request):
     elif request.user.is_authenticated == True:
         register_name = UserProfile.objects.get(user=request.user)
         register_company = RegistCustomer.objects.filter(title=register_name).exists()
+        register_company_driver = RegistCompDriver.objects.filter(title=register_name).exists()
         data ={
             'register_company':register_company,
             'register_name': register_name,
+            'register_company_driver': register_company_driver,
         }
-        if register_name.customer == 'RCD':
+        if register_name.customer == 'RCD' and register_company_driver:
             template = loader.get_template('order_list.html')
             object_list = Order.objects.all()
             data = {
                 'object_list': object_list,
                 'register_name': register_name,
+
             }
             return HttpResponse(template.render(data, request))
         return HttpResponse(template.render(data, request))
@@ -125,7 +128,7 @@ def create_order(request):
     OrderFormSet = modelformset_factory(Order, fields=('title',
                   'citi_start', 'citi_end', 'adress_start','adress_end', 'price',
                   'price_on_kilo', 'distance','time_in_distance', 'email_sestination', 'type_carcase',
-                  'count', 'mass', 'data_publish', 'description'))
+                  'count', 'mass', 'data_publish', 'description'), help_texts={'mass': '-Указывается масса в кг'})
 
 #            return HttpResponseRedirect(reverse_lazy('app_drivers:oplata', args=(Order.objects.last().id,))) 
 
@@ -145,6 +148,16 @@ def oplata(request, order_id):
         'order': order,
         'p': p,
     }
+    return HttpResponse(template.render(data, request))
+
+def detail_order_driver(request, order_id):
+    template = loader.get_template('detail_order_driver.html')
+    order_list = get_object_or_404(Order, id=order_id)
+    
+    data = {
+        'order_list': order_list,
+    }
+
     return HttpResponse(template.render(data, request))
 
 
@@ -210,9 +223,37 @@ def create_order_now(request):
     #return HttpResponse(template.render(data))
     return HttpResponseRedirect(reverse('app_drivers:oplata', args=(order_id,)))
 
+def create_compdata_driver(request):
+    CompDriverFormSet = formset_factory(CompDriverForm, extra=1)
+    if request.method == 'POST':
+        RegistCompDriver.objects.all().create(title=UserProfile.objects.get(user=request.user),
+#            name=UserProfile.objects.get(user=request.user).name,
+            adress= request.POST['comp_driver-0-adress'],
+            phone=request.POST['comp_driver-0-phone'],
+        )
+
+        #return render(request,'base.html')
+        return HttpResponseRedirect(reverse_lazy('app_drivers:base'))
+    # if request.method == 'POST':
+    #     comp_driver_formset = CompDriverFormSet(request.POST)
+    #     if comp_driver_formset.is_valid():
+    #         for comp_driver in comp_driver_formset:
+    #             comp_driver.save()
+    #         return HttpResponseRedirect(reverse_lazy('app_drivers:base'))
+    else:
+        form = CompDriverFormSet(prefix='comp_driver')
+    return render(request, 'create_data/create_compdata_driver.html', {'form': form})
 
 
 
+
+
+
+# class CompDriverEdit(CreateView):
+#     model = RegistCompDriver
+#     form_class = CompDriverForm
+#     success_url = reverse_lazy('app_drivers:base')
+#     template_name = 'create_data_driver.html'
 
 class OrderList(ListView):
     model = Order
@@ -233,6 +274,8 @@ def base(request):
 #Привязать к оплате номер id
 #После оплаты сделать статус is_active == True
 #Сделать страницу платежа с учетом комиссии
-#Сделать форму добавления данных о компании перевозчика через forms.py
-#Сделать страницу по нажатию клавиши подробнее
+
+#Сделать на странице 'detail_order_driver' карту с отображением пути.
+
+
 #Сделать правильную логику по статусам заказа

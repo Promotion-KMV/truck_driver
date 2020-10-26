@@ -44,7 +44,14 @@ class SignUpForm(UserCreationForm):
 		model = User
 		fields = ('username', 'name', 'type_organization', 'customer', 'email', 'password1', 'password2', )	
 
+class CompDriverForm(forms.ModelForm):
+	
+	class Meta:
+		model = RegistCompDriver
+		fields = ['adress', 'phone']
+
 # class OplataForm(forms.ModelForm):
 # 	class Meta:
 # 		model = Oplata
 # 		fields= '__all__'
+

@@ -39,8 +39,17 @@
 			<input type="submit" value="Заполнить">			
 		</form>
 	{% endif %}
+	{% if register_company_driver == False and register_name.customer == 'RCD' %}
+	<h3>Для дальнейших действий на сайте заполните данные о компании</h3>
+		<form action="{% url 'app_drivers:create_compdata_driver' %}">
+			<input type="submit" value="Заполнить">			
+		</form>	
+
+	{% endif %}
 	{{ register_name }}
+	{{ register_name.customer }}
 	{{ register_company }}
+	{{ register_company_driver }}
 
 	{% block content %}
 

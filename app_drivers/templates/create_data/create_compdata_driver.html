@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+	<div class="create">	
+		<div class="answer_invisible">	
+			<div class="form-row">
+				<div class="col-md-6 mb-3">
+					<form method="post">
+						<h3>Заполните данные о компании</h3>
+						{% csrf_token %}
+						{{ form.as_p }}
+						<input type="submit">
+					</form>
+				</div>
+			</div>
+		</div>	
+	</div>
+
+{% endblock %}
